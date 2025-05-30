@@ -57,7 +57,7 @@ It provides a simple, responsive frontend and a backend built on **Cloudflare Pa
 | `WhiteList_Mode` | Set to `true` to enable IP whitelist mode    |
 | `WhiteList_IPs`  | Comma-separated IP addresses for whitelist   |
 
-If `WhiteList_Mode=true`, only the listed IPs will be allowed to upload images. Otherwise, all IPs are allowed.
+> ✅ After turning on `WhiteList_Mode=true`, only whitelisted images can be displayed.
 
 ---
 
@@ -89,6 +89,6 @@ Bind the D1 database to the Cloudflare Pages project environment as DB.
 
 ## 📜 License
 
-MIT License © 2025 OpenJSW / OpenGraphPic Project
+MIT License © 2025 2025 OpenJSW™ / OpenGraphPic Project
 
 ````
