@@ -39,7 +39,6 @@
 | `ADMIN_USERNAME`   | 管理后台用户名                    |
 | `ADMIN_PASS`       | 管理后台密码                      |
 | `WhiteList_Mode`   | 开启白名单模式（true/false）      |
-| `WhiteList_IPs`    | 白名单 IP（英文逗号分隔）         |
 
 > ✅ 开启 `WhiteList_Mode=true` 后，只有白名单图片才能展示。
 
