@@ -82,8 +82,6 @@ Bind the D1 database to the Cloudflare Pages project environment as DB.
 ├─ index.html        # Main upload page
 ├─ admin.html        # Admin dashboard
 ├─ /functions/       # Cloudflare Functions backend
-├─ /assets/          # CSS, icons, scripts
-```
 
 ---
 
