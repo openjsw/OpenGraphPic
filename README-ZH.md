@@ -5,7 +5,7 @@
 
 ---
 
-**OpenGraphPic** 是一个基于 [Telegraph（Telegram 文件服务）](https://core.telegram.org/bots/api#sending-files) 的开源图床工具，前端基于 Cloudflare Pages 实现，后端使用 Functions 和 D1 数据库构建，部署简单、零服务器。
+**OpenGraphPic** 是一个基于 [Telegraph]储存 的开源图床工具，前端基于 Cloudflare Pages 实现，后端使用 Functions 和 D1 数据库构建，部署简单、零服务器。
 
 ---
 
@@ -15,7 +15,7 @@
 - ☁️ 使用 Telegram Bot 托管文件  
 - 🌍 Cloudflare Pages 零运维部署  
 - 🔐 支持后台登录查看管理（用户名密码）  
-- ✅ 支持白名单模式，只允许特定 IP 上传（WhiteList_Mode）
+- ✅ 支持白名单模式（WhiteList_Mode）
 
 ---
 
