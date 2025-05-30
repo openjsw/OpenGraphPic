@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Telegraph Image 管理后台</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      font-family: "Segoe UI", "PingFang SC", Arial, sans-serif;
+      min-height: 100vh;
+    }
+    .lang-switch {
+      position: fixed;
+      top: 24px;
+      right: 36px;
+      z-index: 100;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px #0002;
+      transition: box-shadow 0.2s;
+    }
+    .lang-switch img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+    }
+    .lang-switch:focus {
+      outline: 2px solid #3578e5;
+    }
+    /* 登录页面样式 */
+    .center-main {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f9f9f9;
+    }
+    .card {
+      width: 100%;
+      max-width: 460px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      padding: 2.5rem 2rem;
+      box-sizing: border-box;
+      margin: 1rem;
+      display: block;
+    }
+    .card h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #212121;
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+    label {
+      font-weight: 500;
+      color: #232323;
+      margin-bottom: 0.25rem;
+      display: block;
+      font-size: 1rem;
+    }
+    input[type="text"], input[type="password"] {
+      padding: 0.75rem;
+      margin-bottom: 1.3rem;
+      width: 100%;
+      font-size: 1.1rem;
+      border: 1.5px solid #bbb;
+      border-radius: 6px;
+      box-sizing: border-box;
+      transition: border 0.2s;
+      background: #fcfcfc;
+      color: #212121;
+    }
+    input:focus {
+      border: 2px solid #3578e5;
+      outline: 2px solid #b3d4fc;
+      background: #fff;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.7rem 2rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      background: #3578e5;
+      color: #fff;
+      margin-right: 0.5rem;
+      margin-top: 0.25rem;
+      margin-bottom: 0.25rem;
+      transition: background 0.2s;
+      box-shadow: 0 1px 4px #0001;
+    }
+    .btn:focus {
+      outline: 2px solid #2268c9;
+    }
+    .btn-outline {
+      background: #fff;
+      color: #3578e5;
+      border: 1.5px solid #3578e5;
+    }
+    .btn-danger {
+      background: #e11d48;
+      color: #fff;
+    }
+    .error {
+      color: #d32f2f;
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      min-height: 1.2em;
+    }
+    .hidden { display: none !important; }
+
+    /* 后台页面常规布局 */
+    #adminView {
+      width: 100%;
+      max-width: 1100px;
+      margin: 40px auto 24px auto;
+      background: none;
+      box-shadow: none;
+      border-radius: 0;
+      padding: 0 1vw;
+      display: block;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+      background: none;
+      box-shadow: none;
+      border-radius: 0;
+    }
+    .topbar h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #222;
+      letter-spacing: 1px;
+      background: none;
+    }
+    .admin-content input[type="text"].search-bar {
+      margin-bottom: 0.6rem;
+      margin-top: 0.2rem;
+      width: 320px;
+      max-width: 90vw;
+      font-size: 1rem;
+    }
+    .op-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 3px;
+    }
+    .id-preview {
+      color: #888;
+      font-size: 12px;
+      word-break: break-all;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      background: white;
+      table-layout: fixed;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px #0001;
+    }
+    th, td {
+      padding: 0.6rem;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 1rem;
+    }
+    tr:hover {
+      background: #f4f7fa;
+    }
+    @media (max-width: 700px) {
+      .card {
+        max-width: 98vw;
+        padding: 1rem 0.3rem;
+      }
+      .lang-switch {
+        top: 8px;
+        right: 6px;
+        width: 32px;
+        height: 32px;
+      }
+      .lang-switch img { width: 28px; height: 28px;}
+      th, td { font-size: 0.92rem; }
+      .topbar { flex-direction: column; align-items: flex-start;}
+      #adminView { padding: 0 1vw; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 多语言切换 -->
+  <div class="lang-switch" tabindex="0" aria-label="切换语言" title="切换语言" onclick="toggleLanguage()" onkeydown="if(event.key==='Enter'){toggleLanguage();}">
+    <img src="/img/language.png" alt="Language Switch" />
+  </div>
+
+  <!-- 登录页面卡片居中 -->
+  <div class="center-main" id="loginMain">
+    <section id="loginView" class="card" aria-labelledby="login-title">
+      <h2 id="login-title">管理员登录</h2>
+      <form onsubmit="event.preventDefault();login();" autocomplete="on" aria-describedby="errorBox">
+        <div>
+          <label for="username" id="label-username">用户名</label>
+          <input type="text" id="username" placeholder="请输入用户名" autocomplete="username" required aria-required="true" />
+        </div>
+        <div>
+          <label for="password" id="label-password">密码</label>
+          <input type="password" id="password" placeholder="请输入密码" autocomplete="current-password" required aria-required="true" />
+        </div>
+        <div class="error" id="errorBox" aria-live="polite"></div>
+        <button class="btn btn-primary" type="submit" id="loginBtn">登录</button>
+      </form>
+    </section>
+  </div>
+
+  <!-- 后台页面常规布局 -->
+  <div id="adminView" class="hidden">
+    <div class="topbar">
+      <h1 id="admin-title">📂 Telegraph Image 管理后台</h1>
+      <button class="btn btn-outline" onclick="logout()" id="logoutBtn">退出登录</button>
+    </div>
+    <div class="admin-content">
+      <input type="text" id="searchInput" class="search-bar" placeholder="输入类型/标签/ID关键词搜索..." aria-label="搜索" />
+      <button class="btn btn-primary" onclick="loadImages()" id="searchBtn">搜索</button>
+      <table>
+        <thead>
+          <tr>
+            <th id="th-time" style="width: 26%">时间戳</th>
+            <th id="th-type" style="width: 12%">类型</th>
+            <th id="th-label" style="width: 12%">标签</th>
+            <th id="th-ops" style="width: 50%">操作</th>
+          </tr>
+        </thead>
+        <tbody id="imageTable"></tbody>
+      </table>
+      <div class="error" id="adminErrorBox" aria-live="polite"></div>
+    </div>
+  </div>
+  <script>
+    // --- 多语言相关 ---
+    const LANG_TEXTS = {
+      zh: {
+        title: "Telegraph Image 管理后台",
+        loginTitle: "管理员登录",
+        username: "用户名",
+        usernamePh: "请输入用户名",
+        password: "密码",
+        passwordPh: "请输入密码",
+        loginBtn: "登录",
+        loginFail: "登录失败，请检查用户名或密码。",
+        loginNetErr: "网络错误，请稍后再试。",
+        adminTitle: "📂 Telegraph Image 管理后台",
+        logout: "退出登录",
+        searchPh: "输入类型/标签/ID关键词搜索...",
+        search: "搜索",
+        thTime: "时间戳",
+        thType: "类型",
+        thLabel: "标签",
+        thOps: "操作",
+        copy: "复制链接",
+        copyOk: "复制成功：",
+        delete: "删除",
+        deleteAsk: "确定要删除这张图片吗？",
+        deleteFail: "删除失败",
+        whitelist: "白名单",
+        addWhiteAsk: "确定加入白名单？",
+        removeWhiteAsk: "确定移出白名单？",
+        cancelWhite: "取消白名单",
+        notLogin: "未登录或请求失败",
+        loadFail: "⚠ 加载失败：",
+        idPreview: "唯一ID",
+      },
+      en: {
+        title: "Telegraph Image Admin",
+        loginTitle: "Admin Login",
+        username: "Username",
+        usernamePh: "Enter username",
+        password: "Password",
+        passwordPh: "Enter password",
+        loginBtn: "Login",
+        loginFail: "Login failed, check your username or password.",
+        loginNetErr: "Network error, please try again.",
+        adminTitle: "📂 Telegraph Image Admin Panel",
+        logout: "Logout",
+        searchPh: "Search by type/tag/ID...",
+        search: "Search",
+        thTime: "Time",
+        thType: "Type",
+        thLabel: "Label",
+        thOps: "Actions",
+        copy: "Copy Link",
+        copyOk: "Copied: ",
+        delete: "Delete",
+        deleteAsk: "Are you sure to delete this image?",
+        deleteFail: "Delete failed",
+        whitelist: "Whitelist",
+        addWhiteAsk: "Add to whitelist?",
+        removeWhiteAsk: "Remove from whitelist?",
+        cancelWhite: "Remove whitelist",
+        notLogin: "Not logged in or request failed",
+        loadFail: "⚠ Load failed: ",
+        idPreview: "Unique ID",
+      }
+    };
+    let lang = localStorage.getItem('lang') || 'zh';
+    function toggleLanguage() {
+      lang = lang === 'zh' ? 'en' : 'zh';
+      localStorage.setItem('lang', lang);
+      applyLang();
+    }
+    function applyLang() {
+      const t = LANG_TEXTS[lang];
+      document.title = t.title;
+      // 登录
+      document.getElementById('login-title').textContent = t.loginTitle;
+      document.getElementById('label-username').textContent = t.username;
+      document.getElementById('label-password').textContent = t.password;
+      document.getElementById('username').placeholder = t.usernamePh;
+      document.getElementById('password').placeholder = t.passwordPh;
+      document.getElementById('loginBtn').textContent = t.loginBtn;
+      // 管理后台
+      document.getElementById('admin-title').textContent = t.adminTitle;
+      document.getElementById('logoutBtn').textContent = t.logout;
+      document.getElementById('searchInput').placeholder = t.searchPh;
+      document.getElementById('searchBtn').textContent = t.search;
+      document.getElementById('th-time').textContent = t.thTime;
+      document.getElementById('th-type').textContent = t.thType;
+      document.getElementById('th-label').textContent = t.thLabel;
+      document.getElementById('th-ops').textContent = t.thOps;
+      // 如果已登录，刷新表格
+      if (!document.getElementById('loginView').classList.contains('hidden')) return;
+      loadImages();
+    }
+    window.addEventListener('DOMContentLoaded', applyLang);
+
+    // --- 功能逻辑 ---
+    async function checkLogin() {
+      try {
+        const res = await fetch("/manage/check", { credentials: "include" });
+        if (!res.ok) return false;
+        const data = await res.json();
+        return data.loggedIn;
+      } catch {
+        return false;
+      }
+    }
+
+    async function login() {
+      const t = LANG_TEXTS[lang];
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errorBox = document.getElementById('errorBox');
+      try {
+        const res = await fetch('/manage/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+          credentials: 'include'
+        });
+        const text = await res.text();
+        if (res.ok && text === 'ok') {
+          errorBox.textContent = '';
+          showAdminView();
+          loadImages();
+        } else {
+          errorBox.textContent = t.loginFail;
+        }
+      } catch {
+        errorBox.textContent = t.loginNetErr;
+      }
+    }
+
+    async function loadImages() {
+      const t = LANG_TEXTS[lang];
+      const keyword = document.getElementById('searchInput').value.trim();
+      const errorBox = document.getElementById('adminErrorBox');
+      errorBox.textContent = '';
+      try {
+        const res = await fetch(`/manage/list?q=${encodeURIComponent(keyword)}`, { credentials: "include" });
+        if (!res.ok) throw new Error(t.notLogin);
+        const data = await res.json();
+        const tbody = document.getElementById('imageTable');
+        tbody.innerHTML = '';
+        data.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${new Date(item.timestamp * 1000).toLocaleString(lang)}</td>
+            <td>${item.list_type}</td>
+            <td>${item.rating_label}</td>
+            <td style="white-space:normal">
+              <div class="op-buttons">
+                <button class="btn btn-outline" onclick="copyLink('${item.name}')" title="${t.copy}: ${item.name}">${t.copy}</button>
+                ${
+                  item.list_type === 'White'
+                  ? `<button class="btn btn-danger" onclick="toggleWhitelist('${item.name}', true)">${t.cancelWhite}</button>`
+                  : `<button class="btn btn-primary" onclick="toggleWhitelist('${item.name}', false)">${t.whitelist}</button>`
+                }
+                <button class="btn btn-danger" onclick="deleteImage(${item.id})">${t.delete}</button>
+              </div>
+              <div class="id-preview" title="${t.idPreview}">${item.name}</div>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        errorBox.textContent = LANG_TEXTS[lang].loadFail + err.message;
+      }
+    }
+
+    async function deleteImage(id) {
+      const t = LANG_TEXTS[lang];
+      if (!confirm(t.deleteAsk)) return;
+      try {
+        const res = await fetch('/manage/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id }),
+          credentials: "include"
+        });
+        if (!res.ok) throw new Error(t.deleteFail);
+        loadImages();
+      } catch (err) {
+        alert("❌ " + err.message);
+      }
+    }
+
+    async function toggleWhitelist(name, isRemove) {
+      const t = LANG_TEXTS[lang];
+      const msg = isRemove ? t.removeWhiteAsk : t.addWhiteAsk;
+      if (!confirm(msg)) return;
+      await fetch('/manage/whitelist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, action: isRemove ? "remove" : "add" }),
+        credentials: "include"
+      });
+      loadImages();
+    }
+
+    function copyLink(name) {
+      const t = LANG_TEXTS[lang];
+      const url = `${location.origin}/file/${name}`;
+      navigator.clipboard.writeText(url);
+      alert(t.copyOk + url);
+    }
+
+    async function logout() {
+      await fetch("/manage/logout", { credentials: "include" });
+      showLoginView();
+    }
+
+    function showLoginView() {
+      document.getElementById('loginMain').classList.remove('hidden');
+      document.getElementById('adminView').classList.add('hidden');
+    }
+
+    function showAdminView() {
+      document.getElementById('loginMain').classList.add('hidden');
+      document.getElementById('adminView').classList.remove('hidden');
+    }
+
+    // 页面初始化
+    (async () => {
+      if (await checkLogin()) {
+        showAdminView();
+        loadImages();
+      } else {
+        showLoginView();
+      }
+    })();
+  </script>
+</body>
+</html>
