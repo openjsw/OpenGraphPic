@@ -8,7 +8,7 @@
 
 ## 📌 Overview
 
-**OpenGraphPic** allows you to upload and host images via [Telegraph](https://core.telegram.org/bots/api#sending-files), a content delivery service used by Telegram bots.  
+**OpenGraphPic** allows you to upload and host images via [Telegraph], a content delivery service used by Telegram bots.  
 It provides a simple, responsive frontend and a backend built on **Cloudflare Pages + Functions + D1**, making it fast, serverless, and easy to deploy.
 
 ---
@@ -20,7 +20,7 @@ It provides a simple, responsive frontend and a backend built on **Cloudflare Pa
 - 🧩 Serverless backend using Cloudflare Functions  
 - 📄 Telegram-based storage (via Bot API)  
 - 🔐 Admin panel with basic authentication  
-- ✅ Optional IP whitelist mode (`WhiteList_Mode=true`)  
+- ✅ whitelist mode (`WhiteList_Mode=true`)  
 
 ---
 
