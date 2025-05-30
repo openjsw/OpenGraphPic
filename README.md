@@ -1,74 +1,94 @@
-## 📘  JSWGraph图引 部署说明文档
+# OpenGraphPic
+
+> A lightweight, serverless image hosting tool powered by Telegraph and Cloudflare Pages.
+
+[🇨🇳 中文说明文档](./readme-zh.md)
 
 ---
 
-### 📄 项目简介 
+## 📌 Overview
 
-**JSWGraph** **图引**支持将你的图片转存到 [Telegraph] 
-
-适合搭建私有图床服务，前端简洁美观，支持复制链接和预览。
-
----
-
-### ⚙️ 原理说明 
-
-1. 用户通过网页上传文件；
-2. 前端将文件 POST 到后端（Cloudflare Functions）；
-3. 后端使用 `TG_Bot_Token` 和 `TG_Chat_ID` 调用 Telegram Bot API 的 `sendDocument` 接口，将文件发送到 Telegram；
-4. Telegram 会为每个文件返回一个 `file_id` 和可下载链接（通过 bot 文件 API）；
-5. 后端返回该链接给前端展示。
-
-> ✅ 上传后的文件托管在 Telegram , 但请勿滥用。
+**OpenGraphPic** allows you to upload and host images via [Telegraph](https://core.telegram.org/bots/api#sending-files), a content delivery service used by Telegram bots.  
+It provides a simple, responsive frontend and a backend built on **Cloudflare Pages + Functions + D1**, making it fast, serverless, and easy to deploy.
 
 ---
 
-### 🧪 项目特点
+## ✨ Features
 
-* 🖼️ 支持图片上传；
-* 🔗 自动生成可访问链接并复制；
-* 🧱 可部署在 Cloudflare page上；
-* 🌐 响应式网页，手机端也可良好使用。
-
----
-
-### 🚀 部署指南 
-
-#### ✅ 先决条件 
-
-* 一个 Telegram Bot，并记下其 Token；，你可以获取 bot: [@BotFather](https://t.me/BotFather)
-* 一个 Telegram Channel（可设为私有），将 Bot 添加为管理员；
-* 获取该频道的 `TG_Bot_Token`（格式为 `-100xxxxxxxxxx`）；
-* 你可以使用以下 bot 获取 TG_Chat_ID: [@getidsbot](https://t.me/GetTheirIDBot)
-
-#### 🔐 环境变量
-
-| 变量名  | 说明                   |
-| -------------- | ----------------------------------- |
-| `TG_Bot_Token` | 你的 Telegram Bot 的 Token（以 `bot` 开头） |
-| `TG_Chat_ID`   | 目标频道的 chat_id，用于接收文件               |
-| `ADMIN_PASS` | 后台管理密码 |
-| `ADMIN_USERNAME`   | 后台管理用户名               |
+- 📤 Upload images and get public CDN links instantly  
+- 🌐 Fully responsive UI for desktop and mobile  
+- 🧩 Serverless backend using Cloudflare Functions  
+- 📄 Telegram-based storage (via Bot API)  
+- 🔐 Admin panel with basic authentication  
+- ✅ Optional IP whitelist mode (`WhiteList_Mode=true`)  
 
 ---
 
-#### ☁️ Cloudflare Pages 部署说明 
+## ⚙️ How It Works
 
-1.请先forker这个项目，然后在cloudflare page选择连接现有git库即可
-2.创建D1数据库
+1. Frontend uploads the image via HTTP POST to the backend  
+2. The backend sends the file to Telegram via `sendDocument`  
+3. It retrieves the file link using the Bot API  
+4. The link is returned and displayed for the user  
+
+> Note: All files are stored on Telegram's CDN. Please avoid abuse.
+
+---
+
+## 🚀 Deployment Guide (Cloudflare Pages)
+
+### 🔧 Requirements
+
+- A [Telegram Bot](https://t.me/BotFather) and token  
+- A Telegram channel where the bot is admin  
+- The `TG_Chat_ID` of the target channel (use [@GetTheirIDBot](https://t.me/GetTheirIDBot))  
+- A Cloudflare account (for Pages + D1)
+
+---
+
+### 🔐 Environment Variables
+
+| Name             | Description                                  |
+|------------------|----------------------------------------------|
+| `TG_Bot_Token`   | Your bot token (starts with `bot...`)        |
+| `TG_Chat_ID`     | Target channel's chat ID (e.g., `-100xxxx`)  |
+| `ADMIN_USERNAME` | Admin panel username                         |
+| `ADMIN_PASS`     | Admin panel password                         |
+| `WhiteList_Mode` | Set to `true` to enable IP whitelist mode    |
+| `WhiteList_IPs`  | Comma-separated IP addresses for whitelist   |
+
+If `WhiteList_Mode=true`, only the listed IPs will be allowed to upload images. Otherwise, all IPs are allowed.
+
+---
+
+### 🧱 D1 Database Setup
+
+Create a new D1 database and run the following SQL schema:
+
 ```sql
 CREATE TABLE IF NOT EXISTS images (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,         
-  name TEXT NOT NULL UNIQUE,                    
-  list_type TEXT DEFAULT 'None',            
-  rating_label TEXT DEFAULT 'None',         
-  liked INTEGER DEFAULT 0,               
-  timestamp INTEGER                        
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL UNIQUE,
+  list_type TEXT DEFAULT 'None',
+  rating_label TEXT DEFAULT 'None',
+  liked INTEGER DEFAULT 0,
+  timestamp INTEGER
 );
-```
+Bind the D1 database to the Cloudflare Pages project environment as DB.
+## 🗂️ Project Structure
 
-3.绑定D1数据库
+```
+/
+├─ index.html        # Main upload page
+├─ admin.html        # Admin dashboard
+├─ /functions/       # Cloudflare Functions backend
+├─ /assets/          # CSS, icons, scripts
+```
 
 ---
 
+## 📜 License
 
+MIT License © 2025 OpenJSW / OpenGraphPic Project
 
+````
