@@ -2,7 +2,7 @@
 
 > A lightweight, serverless image hosting tool powered by Telegraph and Cloudflare Pages.
 
-[🇨🇳 中文说明文档](./readme-zh.md)
+[🇨🇳 中文说明文档](./README-ZH.md)
 
 ---
 
