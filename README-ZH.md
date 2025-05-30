@@ -1,9 +1,6 @@
-
----
-
 ## ✅ `readme-zh.md`（中文版）
 
-```markdown
+
 # OpenGraphPic 图引图床部署说明（中文）
 
 ---
@@ -80,9 +77,8 @@ CREATE TABLE IF NOT EXISTS images (
    * 输出目录：`/`
    * 框架选择：None
 
-4. 添加环境变量，绑定 D1 数据库为 `DB`
+4. 添加环境变量，绑定 D1 数据库变量名为 `DB`
 
----
 
 ## 📜 开源协议
 
